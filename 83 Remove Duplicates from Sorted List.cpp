@@ -13,21 +13,19 @@ public:
             return nullptr;
         }
         auto p = head;
-        while (p->next){
-            while (p->val == p->next->val && p->next){
-                if (p->next->next){
-                    auto tmp = p->next;
-                    p->next = p->next->next;
-                    free(tmp);
-                }
-                else{
-                    p->next = nullptr;
-                    break;
-                }
+        auto tail = head;
+        while (p = p->next){
+            if (p->val != tail->val){
+                tail = tail->next;
+                tail->val = p->val;
             }
-            if (p->next){
-                p=p->next;
-            }
+        }
+        p = tail->next;
+        tail->next = nullptr;
+        while (p){
+            auto tmp = p->next;
+            free(p);
+            p = tmp;
         }
         return head;
     }
